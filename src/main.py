@@ -7,7 +7,7 @@ np.random.seed(555)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, default='movie', help='which dataset to use')
-parser.add_argument('--dim', type=int, default=64, help='dimension of entity and relation embeddings')
+parser.add_argument('--dim', type=int, default=32, help='dimension of entity and relation embeddings')
 parser.add_argument('--n_hop', type=int, default=2, help='maximum hops')
 parser.add_argument('--kge_weight', type=float, default=0.02, help='weight of the KGE term')
 parser.add_argument('--l2_weight', type=float, default=1e-3, help='weight of the l2 regularization term')
