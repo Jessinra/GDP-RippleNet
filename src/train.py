@@ -9,7 +9,6 @@ logger = Logger()
 session_log_path = "../log/{}/".format(timestamp)
 logger.create_session_folder(session_log_path)
 logger.set_default_filename(session_log_path + "log.txt")
-saver = tf.train.Saver()
 
 def train(args, data_info, show_loss):
     train_data = data_info[0]
@@ -23,6 +22,8 @@ def train(args, data_info, show_loss):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
+        saver = tf.train.Saver()
+
         for step in range(args.n_epoch):
 
             # training
