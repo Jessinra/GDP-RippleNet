@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 from model import RippleNet
 
+from logger import Logger
 from datetime import datetime
 timestamp = str(datetime.timestamp(datetime.now()))
 
