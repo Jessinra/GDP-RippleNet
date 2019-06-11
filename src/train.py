@@ -2,6 +2,14 @@ import tensorflow as tf
 import numpy as np
 from model import RippleNet
 
+from datetime import datetime
+timestamp = str(datetime.timestamp(datetime.now()))
+
+logger = Logger()
+session_log_path = "../log/{}/".format(timestamp)
+logger.create_session_folder(session_log_path)
+logger.set_default_filename(session_log_path + "log.txt")
+saver = tf.train.Saver()
 
 def train(args, data_info, show_loss):
     train_data = data_info[0]
@@ -16,22 +24,31 @@ def train(args, data_info, show_loss):
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         for step in range(args.n_epoch):
+
             # training
             np.random.shuffle(train_data)
             start = 0
             while start < train_data.shape[0]:
+
                 _, loss = model.train(
                     sess, get_feed_dict(args, model, train_data, ripple_set, start, start + args.batch_size))
                 start += args.batch_size
+
                 if show_loss:
                     print('%.1f%% %.4f' % (start / train_data.shape[0] * 100, loss))
+                    logger.log('%.1f%% %.4f' % (start / train_data.shape[0] * 100, loss))
 
             # evaluation
             train_auc, train_acc = evaluation(sess, args, model, train_data, ripple_set, args.batch_size)
             eval_auc, eval_acc = evaluation(sess, args, model, eval_data, ripple_set, args.batch_size)
             test_auc, test_acc = evaluation(sess, args, model, test_data, ripple_set, args.batch_size)
 
+            # Save the variables to disk.
+            save_path = saver.save(sess, session_log_path + "models/epoch_{}".format(step))
+
             print('epoch %d    train auc: %.4f  acc: %.4f    eval auc: %.4f  acc: %.4f    test auc: %.4f  acc: %.4f'
+                  % (step, train_auc, train_acc, eval_auc, eval_acc, test_auc, test_acc))
+            logger.log('epoch %d    train auc: %.4f  acc: %.4f    eval auc: %.4f  acc: %.4f    test auc: %.4f  acc: %.4f'
                   % (step, train_auc, train_acc, eval_auc, eval_acc, test_auc, test_acc))
 
 

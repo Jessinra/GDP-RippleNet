@@ -1,8 +1,8 @@
 import argparse
 import numpy as np
 
-RATING_FILE_NAME = dict({'movie': 'ratings.dat', 'book': 'BX-Book-Ratings.csv', 'news': 'ratings.txt'})
-SEP = dict({'movie': '::', 'book': ';', 'news': '\t'})
+RATING_FILE_NAME = dict({'movie': 'ratings_re.csv', 'book': 'BX-Book-Ratings.csv', 'news': 'ratings.txt'})
+SEP = dict({'movie': ',', 'book': ';', 'news': '\t'})
 THRESHOLD = dict({'movie': 4, 'book': 0, 'news': 0})
 
 
@@ -81,14 +81,15 @@ def convert_kg():
 
     files = []
     if DATASET == 'movie':
-        files.append(open('../data/' + DATASET + '/kg_part1_rehashed.txt', encoding='utf-8'))
-        files.append(open('../data/' + DATASET + '/kg_part2_rehashed.txt', encoding='utf-8'))
+        files.append(open('../data/' + DATASET + '/triples_idx.txt', encoding='utf-8'))
+        # files.append(open('../data/' + DATASET + '/kg_part1_rehashed.txt', encoding='utf-8'))
+        # files.append(open('../data/' + DATASET + '/kg_part2_rehashed.txt', encoding='utf-8'))
     else:
         files.append(open('../data/' + DATASET + '/kg_rehashed.txt', encoding='utf-8'))
 
     for file in files:
         for line in file:
-            array = line.strip().split('\t')
+            array = line.strip().split(' ')
             head_old = array[0]
             relation_old = array[1]
             tail_old = array[2]
