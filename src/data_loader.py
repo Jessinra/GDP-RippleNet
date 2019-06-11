@@ -38,7 +38,7 @@ def dataset_split(rating_np):
     left = set(range(n_ratings)) - set(eval_indices)
     test_indices = np.random.choice(list(left), size=int(n_ratings * test_ratio), replace=False)
     train_indices = list(left - set(test_indices))
-    # print(len(train_indices), len(eval_indices), len(test_indices))
+    # print(len(train_indices), len(eval_indices), len(test_i  ndices))
 
     # traverse training data, only keeping the users with positive ratings
     user_history_dict = dict()
@@ -59,6 +59,15 @@ def dataset_split(rating_np):
     train_data = rating_np[train_indices]
     eval_data = rating_np[eval_indices]
     test_data = rating_np[test_indices]
+
+    print(">>>> debug >>>>")
+    print(train_data)
+    print(eval_data)
+    print(test_data)
+    
+    print(len(train_data))
+    print(len(eval_data))
+    print(len(test_data))
 
     return train_data, eval_data, test_data, user_history_dict
 
