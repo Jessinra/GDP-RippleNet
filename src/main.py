@@ -16,7 +16,7 @@ parser.add_argument('--l2_weight', type=float, default=1e-3, help='weight of the
 parser.add_argument('--lr', type=float, default=0.003, help='learning rate')
 parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
 parser.add_argument('--n_epoch', type=int, default=200, help='the number of epochs')
-parser.add_argument('--n_memory', type=int, default=64, help='size of ripple set for each hop')
+parser.add_argument('--n_memory', type=int, default=32, help='size of ripple set for each hop')
 parser.add_argument('--item_update_mode', type=str, default='plus_transform',
                     help='how to update item at the end of each hop')
 parser.add_argument('--using_all_hops', type=bool, default=True,
