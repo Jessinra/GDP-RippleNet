@@ -73,7 +73,7 @@ def convert_kg():
 
     for line in raw_knowledge_graph:
         head, relation, tail = line.strip().split(' ')
-        writer.write('%d\t%d\t%d\n' % (head, relation, tail))
+        writer.write("{}\t{}\t{}\n".format(head, relation, tail))
 
     writer.close()
     print('converting kg file success !')
