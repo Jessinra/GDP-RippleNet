@@ -4,6 +4,7 @@ from model import RippleNet
 
 from logger import Logger
 from datetime import datetime
+from tqdm import tqdm
 
 timestamp = str(datetime.timestamp(datetime.now()))
 
@@ -27,16 +28,15 @@ def train(args, data_info, show_loss):
         sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver(max_to_keep=None)
 
-        for step in range(args.n_epoch):
+        for step in tqdm(range(args.n_epoch)):
 
             # training
             np.random.shuffle(train_data)
             start = 0
-            while start < train_data.shape[0]:
+            for start in tqdm(range(0, train_data.shape[0], args.batch_size)):
 
                 _, loss = model.train(
                     sess, get_feed_dict(args, model, train_data, ripple_set, start, start + args.batch_size))
-                start += args.batch_size
 
                 if show_loss:
                     print('%.1f%% %.4f' % (start / train_data.shape[0] * 100, loss))

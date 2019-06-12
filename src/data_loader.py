@@ -94,7 +94,7 @@ def get_ripple_set(args, kg, user_history_dict):
     # user -> [(hop_0_heads, hop_0_relations, hop_0_tails), (hop_1_heads, hop_1_relations, hop_1_tails), ...]
     ripple_set = collections.defaultdict(list)
 
-    for user in user_history_dict:
+    for user in tqdm(user_history_dict):
         for h in range(args.n_hop):
             memories_h = []
             memories_r = []
