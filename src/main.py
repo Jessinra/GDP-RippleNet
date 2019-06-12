@@ -1,6 +1,5 @@
 import argparse
 import numpy as np
-import os 
 import pickle
 
 from data_loader import load_data
@@ -47,10 +46,10 @@ show_loss = False
 
 preprocessed_data_filename = "../data/movie/preprocessed_data_info"
 
-if os.path.exists(preprocessed_data_filename):
+try:
+    data_info = pickle.load(open(preprocessed_data_filename, 'rb'))
+except:
     data_info = load_data(args)
     pickle.dump(data_info, open(preprocessed_data_filename, 'wb'))
-else:
-    data_info = pickle.load(open(preprocessed_data_filename, 'rb'))
 
 train(args, data_info, show_loss)
