@@ -2,19 +2,22 @@ import argparse
 import numpy as np
 
 RATING_FILE_NAME = dict({'movie': 'ratings_re.csv', 'book': 'BX-Book-Ratings.csv', 'news': 'ratings.txt'})
+ITEMS_FILE_NAME = dict({'movie': 'movies_re.csv'})
 SEP = dict({'movie': ',', 'book': ';', 'news': '\t'})
 THRESHOLD = dict({'movie': 4, 'book': 0, 'news': 0})
 
 
 def convert_rating():
-    file = '../data/' + DATASET + '/' + RATING_FILE_NAME[DATASET]
 
     print('reading rating file ...')
-    item_set = set(item_index_old2new.values())  # TODO : fix this
+    items_filename = '../data/' + DATASET + '/' + ITEMS_FILE_NAME[DATASET]
+    items = open(items_filename, encoding='utf-8').readlines()
+    item_set = set(range(len(items)))
 
     user_pos_ratings = dict()
     user_neg_ratings = dict()
 
+    file = '../data/' + DATASET + '/' + RATING_FILE_NAME[DATASET]
     for line in open(file, encoding='utf-8').readlines()[1:]:
 
         array = line.strip().split(SEP[DATASET])
