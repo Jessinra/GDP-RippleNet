@@ -45,7 +45,7 @@ def convert_rating():
 
         # Write positive sample
         for item in pos_item_set:
-            writer.write('%d\t%d\t1\n' % (user_index, item))
+            writer.write("{}\t{}\t1\n".format(user_index, item))
 
         # ! Negative sample using unwatched instead of negative rated movies !
         unwatched_set = item_set - pos_item_set
@@ -54,7 +54,7 @@ def convert_rating():
 
         # Write negative sample (unwatched)
         for item in np.random.choice(list(unwatched_set), size=len(pos_item_set), replace=False):
-            writer.write('%d\t%d\t0\n' % (user_index, item))
+            writer.write("{}\t{}\t0\n".format(user_index, item))
 
     writer.close()
     print('converting rating file success !')
