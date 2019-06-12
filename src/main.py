@@ -42,7 +42,7 @@ parser.add_argument('--using_all_hops', type=bool, default=True,
 
 args = parser.parse_args()
 
-show_loss = False
+show_loss = True
 
 preprocessed_data_filename = "../data/movie/preprocessed_data_info"
 
