@@ -1,5 +1,7 @@
 import argparse
 import numpy as np
+import os 
+
 from data_loader import load_data
 from train import train
 
@@ -41,5 +43,13 @@ parser.add_argument('--using_all_hops', type=bool, default=True,
 args = parser.parse_args()
 
 show_loss = False
-data_info = load_data(args)
+
+preprocessed_data_filename = "../data/movie/preprocessed_data_info"
+
+if os.path.exists(preprocessed_data_filename):
+    data_info = load_data(args)
+    pickle.dump(data_info, open(preprocessed_data_filename, 'wb'))
+else:
+    data_info = pickle.load(open(preprocessed_data_filename, 'rb'))
+
 train(args, data_info, show_loss)
