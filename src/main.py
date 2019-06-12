@@ -44,7 +44,7 @@ args = parser.parse_args()
 
 show_loss = True
 
-preprocessed_data_filename = "../data/movie/preprocessed_data_info"
+preprocessed_data_filename = "../data/movie/preprocessed_data_info_32"
 
 try:
     data_info = pickle.load(open(preprocessed_data_filename, 'rb'))
