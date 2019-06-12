@@ -60,15 +60,6 @@ def dataset_split(rating_np):
     eval_data = rating_np[eval_indices]
     test_data = rating_np[test_indices]
 
-    print(">>>> debug >>>>")
-    print(train_data)
-    print(eval_data)
-    print(test_data)
-    
-    print(len(train_data))
-    print(len(eval_data))
-    print(len(test_data))
-
     return train_data, eval_data, test_data, user_history_dict
 
 
