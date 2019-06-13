@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 import pickle
+import tensorflow as tf
 
 from data_loader import load_data
 from train import train
@@ -9,13 +10,13 @@ np.random.seed(555)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, default='movie', help='which dataset to use')
-parser.add_argument('--dim', type=int, default=32, help='dimension of entity and relation embeddings')
+parser.add_argument('--dim', type=int, default=64, help='dimension of entity and relation embeddings')
 parser.add_argument('--n_hop', type=int, default=2, help='maximum hops')
 parser.add_argument('--kge_weight', type=float, default=0.02, help='weight of the KGE term')
-parser.add_argument('--l2_weight', type=float, default=1e-3, help='weight of the l2 regularization term')
-parser.add_argument('--lr', type=float, default=0.003, help='learning rate')
-parser.add_argument('--batch_size', type=int, default=1024, help='batch size')
-parser.add_argument('--n_epoch', type=int, default=200, help='the number of epochs')
+parser.add_argument('--l2_weight', type=float, default=1e-4, help='weight of the l2 regularization term')
+parser.add_argument('--lr', type=float, default=0.01, help='learning rate')
+parser.add_argument('--batch_size', type=int, default=216, help='batch size')
+parser.add_argument('--n_epoch', type=int, default=50, help='the number of epochs')
 parser.add_argument('--n_memory', type=int, default=32, help='size of ripple set for each hop')
 parser.add_argument('--item_update_mode', type=str, default='plus_transform',
                     help='how to update item at the end of each hop')
@@ -44,7 +45,7 @@ args = parser.parse_args()
 
 show_loss = False
 
-preprocessed_data_filename = "../data/movie/preprocessed_data_info_32"
+preprocessed_data_filename = "../data/movie/preprocessed_data_info_{}".format(args.n_memory)
 
 try:
     data_info = pickle.load(open(preprocessed_data_filename, 'rb'))
@@ -52,4 +53,8 @@ except:
     data_info = load_data(args)
     pickle.dump(data_info, open(preprocessed_data_filename, 'wb'))
 
-train(args, data_info, show_loss)
+# Limit GPU usage
+config = tf.ConfigProto()
+config.gpu_options.allow_growth=True
+    
+train(args, data_info, show_loss, config)

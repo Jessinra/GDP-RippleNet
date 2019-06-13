@@ -14,7 +14,8 @@ logger.create_session_folder(session_log_path)
 logger.set_default_filename(session_log_path + "log.txt")
 
 
-def train(args, data_info, show_loss):
+
+def train(args, data_info, show_loss, config):
     train_data = data_info[0]
     eval_data = data_info[1]
     test_data = data_info[2]
@@ -22,13 +23,15 @@ def train(args, data_info, show_loss):
     n_relation = data_info[4]
     ripple_set = data_info[5]
 
+    logger.log(str(args))
+    
     model = RippleNet(args, n_entity, n_relation)
 
-    with tf.Session() as sess:
+    with tf.Session(config=config) as sess:
         sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver(max_to_keep=None)
 
-        for step in tqdm(range(args.n_epoch)):
+        for step in range(args.n_epoch):
 
             # training
             np.random.shuffle(train_data)
