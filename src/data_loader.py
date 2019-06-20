@@ -1,7 +1,7 @@
 import collections
 import os
 import numpy as np
-
+from tqdm import tqdm
 
 def load_data(args):
     train_data, eval_data, test_data, user_history_dict = load_rating(args)

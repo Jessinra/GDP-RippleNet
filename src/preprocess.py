@@ -1,8 +1,9 @@
 import argparse
 import numpy as np
+from tqdm import tqdm
 
 RATING_FILE_NAME = dict({'movie': 'ratings_re.csv', 'book': 'BX-Book-Ratings.csv', 'news': 'ratings.txt'})
-ITEMS_FILE_NAME = dict({'movie': 'movies_re.csv'})
+ITEMS_FILE_NAME = dict({'movie': 'moviesIdx.txt'})
 SEP = dict({'movie': ',', 'book': ';', 'news': '\t'})
 THRESHOLD = dict({'movie': 4, 'book': 0, 'news': 0})
 
@@ -18,11 +19,11 @@ def convert_rating():
     user_neg_ratings = dict()
 
     file = '../data/' + DATASET + '/' + RATING_FILE_NAME[DATASET]
-    for line in open(file, encoding='utf-8').readlines()[1:]:
+    for line in open(file, encoding='utf-8').readlines():
 
         array = line.strip().split(SEP[DATASET])
         user_index = int(array[0])
-        item_index = array[1]
+        item_index = int(array[1])
         rating = float(array[2])
 
         # Separate positive & negative rated items
@@ -41,10 +42,10 @@ def convert_rating():
 
     # Output file
     writer = open('../data/' + DATASET + '/ratings_final.txt', 'w', encoding='utf-8')
-    for user_index, pos_item_set in user_pos_ratings.items():
+    for user_index, pos_item_set in tqdm(user_pos_ratings.items()):
 
         # Write positive sample
-        for item in pos_item_set:
+        for item in (pos_item_set):
             writer.write("{}\t{}\t1\n".format(user_index, item))
 
         # ! Negative sample using unwatched instead of negative rated movies !
@@ -53,7 +54,7 @@ def convert_rating():
             unwatched_set -= user_neg_ratings[user_index]
 
         # Write negative sample (unwatched)
-        for item in np.random.choice(list(unwatched_set), size=len(pos_item_set), replace=False):
+        for item in (np.random.choice(list(unwatched_set), size=len(pos_item_set), replace=False)):
             writer.write("{}\t{}\t0\n".format(user_index, item))
 
     writer.close()
