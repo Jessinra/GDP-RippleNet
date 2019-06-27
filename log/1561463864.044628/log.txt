@@ -1,0 +1,12 @@
+Namespace(batch_size=1024, dataset='movie', dim=32, item_update_mode='plus_transform', kge_weight=0.1, l2_weight=0.01, lr=0.005, n_epoch=50, n_hop=2, n_memory=64, using_all_hops=True)
+epoch 0    train auc: 0.5032  acc: 0.5120    eval auc: 0.5032  acc: 0.5119    test auc: 0.5034  acc: 0.5121
+epoch 1    train auc: 0.5008  acc: 0.5047    eval auc: 0.5010  acc: 0.5050    test auc: 0.5004  acc: 0.5048
+epoch 2    train auc: 0.4965  acc: 0.4865    eval auc: 0.4971  acc: 0.4869    test auc: 0.4971  acc: 0.4871
+epoch 3    train auc: 0.4943  acc: 0.4816    eval auc: 0.4941  acc: 0.4819    test auc: 0.4936  acc: 0.4815
+epoch 4    train auc: 0.4935  acc: 0.4828    eval auc: 0.4931  acc: 0.4824    test auc: 0.4930  acc: 0.4826
+epoch 5    train auc: 0.4961  acc: 0.4906    eval auc: 0.4962  acc: 0.4904    test auc: 0.4959  acc: 0.4911
+epoch 6    train auc: 0.4996  acc: 0.5004    eval auc: 0.4993  acc: 0.5003    test auc: 0.4992  acc: 0.5000
+epoch 7    train auc: 0.4990  acc: 0.4942    eval auc: 0.4984  acc: 0.4938    test auc: 0.4981  acc: 0.4937
+epoch 8    train auc: 0.4989  acc: 0.4939    eval auc: 0.5000  acc: 0.4948    test auc: 0.4995  acc: 0.4944
+epoch 9    train auc: 0.4957  acc: 0.4853    eval auc: 0.4957  acc: 0.4856    test auc: 0.4963  acc: 0.4860
+epoch 10    train auc: 0.4929  acc: 0.4759    eval auc: 0.4926  acc: 0.4759    test auc: 0.4931  acc: 0.4765

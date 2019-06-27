@@ -1,0 +1,7 @@
+Namespace(batch_size=1024, dataset='movie', dim=32, item_update_mode='plus_transform', kge_weight=0.01, l2_weight=0.001, lr=0.005, n_epoch=50, n_hop=2, n_memory=32, using_all_hops=True)
+epoch 0    train auc: 0.9037  acc: 0.8585    eval auc: 0.9033  acc: 0.8581    test auc: 0.9032  acc: 0.8581
+epoch 1    train auc: 0.9286  acc: 0.8738    eval auc: 0.9278  acc: 0.8730    test auc: 0.9278  acc: 0.8731
+epoch 2    train auc: 0.9294  acc: 0.8746    eval auc: 0.9287  acc: 0.8738    test auc: 0.9288  acc: 0.8740
+epoch 3    train auc: 0.9295  acc: 0.8739    eval auc: 0.9289  acc: 0.8733    test auc: 0.9288  acc: 0.8732
+epoch 4    train auc: 0.9293  acc: 0.8743    eval auc: 0.9287  acc: 0.8736    test auc: 0.9286  acc: 0.8737
+epoch 5    train auc: 0.9302  acc: 0.8748    eval auc: 0.9295  acc: 0.8742    test auc: 0.9294  acc: 0.8742
