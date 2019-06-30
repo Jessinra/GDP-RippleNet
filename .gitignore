@@ -107,3 +107,4 @@ data/news/*
 
 data/movie (copy)/*
 log/*/models
+!data/movie/Preprocess.ipynb

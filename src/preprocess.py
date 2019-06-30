@@ -2,8 +2,8 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 
-RATING_FILE_NAME = dict({'movie': 'ratings_re.csv', 'book': 'BX-Book-Ratings.csv', 'news': 'ratings.txt'})
-ITEMS_FILE_NAME = dict({'movie': 'moviesIdx.txt'})
+RATING_FILE_NAME = dict({'movie': 'ratings_re2.csv', 'book': 'BX-Book-Ratings.csv', 'news': 'ratings.txt'})
+ITEMS_FILE_NAME = dict({'movie': 'moviesIdx2.txt'})
 SEP = dict({'movie': ',', 'book': ';', 'news': '\t'})
 THRESHOLD = dict({'movie': 4, 'book': 0, 'news': 0})
 
@@ -68,7 +68,7 @@ def convert_kg():
     writer = open('../data/' + DATASET + '/kg_final.txt', 'w', encoding='utf-8')
 
     if DATASET == 'movie':
-        raw_knowledge_graph = open('../data/' + DATASET + '/triples_idx.txt', encoding='utf-8')
+        raw_knowledge_graph = open('../data/' + DATASET + '/triples_idx2.txt', encoding='utf-8')
     else:
         raw_knowledge_graph = open('../data/' + DATASET + '/kg_rehashed.txt', encoding='utf-8')
 
