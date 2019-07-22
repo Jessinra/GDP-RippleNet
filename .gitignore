@@ -108,3 +108,4 @@ data/news/*
 data/movie (copy)/*
 log/*/models
 !data/movie/Preprocess.ipynb
+!data/movie/README.md
