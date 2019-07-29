@@ -1,5 +1,8 @@
+ipywidgets==7.4.2
+matplotlib==3.0.3
 numpy==1.16.4
-tqdm==4.32.1
 tensorflow_gpu==1.14.0
+tqdm==4.32.1
+ipython==7.7.0
 scikit_learn==0.21.2
 tensorflow==1.14.0

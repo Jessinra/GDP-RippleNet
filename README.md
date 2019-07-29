@@ -1,6 +1,6 @@
 # GDP-RippleNet
 
-***Last edit : 30 June 2019***
+***Last edit : 29 July 2019***
 
 Recommender system using [RippleNet](http://users.cecs.anu.edu.au/~akmenon/papers/autorec/autorec-paper.pdf), trained using custom [MovieLens-20M](https://grouplens.org/datasets/movielens/20m/) dataset.
 
@@ -20,24 +20,16 @@ A PyTorch re-implementation of RippleNet by Qibin Chen et al. is [here](https://
 *Given a user and an item, predict how likely the user will interact with the item*
 
 # Contents
-- data : contains dataset to use in training
-    - book (not used)
-    - **movie** : custom ml-20m dataset where only movies shows up in Ripple-Net's knowledge graph used.    
-- **log** : contains training result stored in single folder named after training timestamp.
-- **test** : contains jupyter notebook used in testing the trained models
-- src : implementations of RippleNet.
+- `/data` : contains dataset to use in training
+    - `/book`: (not used)
+    - **`/movie`** : custom ml-20m dataset where only movies shows up in Ripple-Net's knowledge graph used.    
+- **`/log`** : contains training result stored in single folder named after training timestamp.
+- **`/test`** : contains jupyter notebook used in testing the trained models
+- `/src` : implementations of RippleNet.
 
 ### Note
     *italic* means this folder is ommited from git, but necessary if you need to run experiments
     **bold** means this folder has it's own README, check it for detailed information :)
-
-
-# How to run
-1. Prepare the dataset and the preprocessed version (check section below this)
-2. Run the training script
-    ~~~
-    python3 src/main.py
-    ~~~
 
 # Preparing 
 ## Installing dependencies 
@@ -50,9 +42,8 @@ You can download the intersect-20m dataset [here](https://github.com/Jessinra/GD
 *Note : Dataset is put on separate repository because it's shared among models.*
 
 ## How to prepare data
-
 1. To create missing `kg_final.txt` & `ratings_final.txt` files:
-- either use this [jupyter notebook](./data/movie/Preprocess.ipynb) (Preprocess.ipynb inside the `./data/movie`).
+- either use this [jupyter notebook](./data/movie/Preprocess.ipynb) (`Preprocess.ipynb` inside the `./data/movie`).
 - or simply run :
      ```
      python3 src/preprocess.py
@@ -64,6 +55,13 @@ You can download the intersect-20m dataset [here](https://github.com/Jessinra/GD
     python3 src/main.py
     ~~~
     the script will preprocess it (and save the result for cache) before training begin.
+
+# How to run
+1. Prepare the dataset and the preprocessed version (check section below this)
+2. Run the training script
+    ~~~
+    python3 src/main.py
+    ~~~
 
 ## **! Caching warning !**
 To start using new dataset, or if dataset changed, those file need to be deleted, and re preprocess it, otherwise it will use old dataset:
@@ -86,11 +84,13 @@ There are several ways to do this :
 5. Run the notebook
 
 # Final result
-| Metric             | Value       |
-|--------------------|-------------|
-| Average prec@10    | +- 0.08     |
-| Diversity@10 n=10  | 0.50 - 0.60 |
-| Evaluated on       | 1.5k users  |
+| Evaluation size     | Prec@10 | Distinct@10 |  Unique items |
+|---------------------|---------|-------------|---------------|
+| Eval on  500 user   | 0.26719 |  0.04640    |   232         |
+| Eval on 1000 user   | 0.26939 |  0.02860    |   286         |
+| Eval on 3000 user   | 0.26379 |  0.01317    |   395         |
+| Eval on 5000 user   | 0.26573 |  0.00914    |   457         |
+
 
 # Other findings
 - Looking from the result of Ripplenet-1M, the usage of KG might turn out to be quite promising, especially to improve the diversity of suggestion.
@@ -103,9 +103,24 @@ There are several ways to do this :
 
     >*Given a user and a list of items, find the top k items that user might like*
   
-- Summary compared to non-KG RecSys: **Big improvement in terms of diversity, similar Prec@k result**
+- Summary compared to non-KG RecSys: **Big improvement in terms of Prec@k and diversity**
+
+# Pros
+- Able to incorporate Knowledge Graph as another source of information with relatively simple approach (embedding)
+- Higher Prec@K compared to KPRN and its derivative models.
+- Require much less memory and disk space compared to KORN.
+- Doesn't require too much hand crafted features.
+- During training, the model converge really fast (< 10 epochs)
+
+# Cons
+- Require relatively slow pre-preprocessing
+- The train and test both takesMore diverse suggestion. a lot of time (almost 1 hr/epoch for training, and even longer for testing). 
+- The model remember the user, the model need to be re-trained for every new user and  item addition.
+- Loss function and metric used in training is not Prec@K, instead it uses AUC and accuracy.
+- Output less diverse compared to KPRN
 
 # Experiment notes
+- Looking from the result of Ripplenet-1M, the usage of KG might turn out to be quite promising, especially to improve the diversity of suggestion.
 - Use lower dimension of embedding (n = 16) result in much better performance and faster training result.
 
 # Author
