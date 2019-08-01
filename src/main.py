@@ -34,7 +34,7 @@ def get_args():
                         help='how to update item at the end of each hop')
     parser.add_argument('--using_all_hops', type=bool, default=True,
                         help='whether using outputs of all hops or just the last hop when making prediction')
-    parser.add_argument('--comment', type=str, default='using exact hyperparam as original one')
+    parser.add_argument('--comment', type=str, default='running normally')
 
     return parser.parse_args()
 
