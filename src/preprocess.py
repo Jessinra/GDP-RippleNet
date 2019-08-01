@@ -2,47 +2,66 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 
-RATING_FILE_NAME = dict({'movie': 'ratings_re2.csv', 'book': 'BX-Book-Ratings.csv', 'news': 'ratings.txt'})
-ITEMS_FILE_NAME = dict({'movie': 'moviesIdx2.txt'})
-SEP = dict({'movie': ',', 'book': ';', 'news': '\t'})
-THRESHOLD = dict({'movie': 4, 'book': 0, 'news': 0})
+RATING_FILENAME = "ratings_re2.csv"
+ITEMS_FILENAME = "moviesIdx2.txt"
+TRIPLES_FILENAME = 'triples_idx2.txt'
+THRESHOLD = 4
+
+OUTPUT_RATING_FILENAME = 'ratings_final.txt'
+OUTPUT_KG_FILENAME = 'kg_final.txt'
+
+np.random.seed(5325)
 
 
 def convert_rating():
 
+    print('reading item file ...')
+    item_set = _read_item_set(ITEMS_FILENAME)
+
     print('reading rating file ...')
-    items_filename = '../data/' + DATASET + '/' + ITEMS_FILE_NAME[DATASET]
+    users_positive_items, users_negative_items = _read_ratings_groupby_user(RATING_FILENAME)
+
+    print('converting rating file ...')
+    _write_formatted_ratings(OUTPUT_RATING_FILENAME, item_set, users_positive_items, users_negative_items)
+
+    print('converting rating file success !')
+
+
+def _read_item_set(items_filename):
     items = open(items_filename, encoding='utf-8').readlines()
-    item_set = set(range(len(items)))
+    return set(range(len(items)))
 
-    user_pos_ratings = dict()
-    user_neg_ratings = dict()
 
-    file = '../data/' + DATASET + '/' + RATING_FILE_NAME[DATASET]
-    for line in open(file, encoding='utf-8').readlines():
+def _read_ratings_groupby_user(rating_filename):
+    user_ratings = open(rating_filename, encoding='utf-8').readlines()
+    users_positive_items, users_negative_items = _split_ratings_groupby_user(user_ratings)
+    return users_positive_items, users_negative_items
 
-        array = line.strip().split(SEP[DATASET])
+
+def _split_ratings_groupby_user(user_ratings):
+
+    users_positive_items = dict()
+    users_negative_items = dict()
+
+    for line in tqdm(user_ratings):
+
+        array = line.strip().split(',')
         user_index = int(array[0])
         item_index = int(array[1])
         rating = float(array[2])
 
-        # Separate positive & negative rated items
-        if rating >= THRESHOLD[DATASET]:
-            if user_index not in user_pos_ratings:
-                user_pos_ratings[user_index] = set()
-            user_pos_ratings[user_index].add(item_index)
+        dict_to_put = users_positive_items if rating >= THRESHOLD else users_negative_items
+        if user_index not in dict_to_put:
+            dict_to_put[user_index] = set()
+        dict_to_put[user_index].add(item_index)
 
-        else:
-            if user_index not in user_neg_ratings:
-                user_neg_ratings[user_index] = set()
-            user_neg_ratings[user_index].add(item_index)
+    return users_positive_items, users_negative_items
 
-    print('reading rating file success !')
-    print('converting rating file ...')
 
-    # Output file
-    writer = open('../data/' + DATASET + '/ratings_final.txt', 'w', encoding='utf-8')
-    for user_index, pos_item_set in tqdm(user_pos_ratings.items()):
+def _write_formatted_ratings(output_rating_filename, item_set, users_positive_items, users_negative_items):
+
+    writer = open(output_rating_filename, 'w', encoding='utf-8')
+    for user_index, pos_item_set in tqdm(users_positive_items.items()):
 
         # Write positive sample
         for item in (pos_item_set):
@@ -50,49 +69,29 @@ def convert_rating():
 
         # ! Negative sample using unwatched instead of negative rated movies !
         unwatched_set = item_set - pos_item_set
-        if user_index in user_neg_ratings:
-            unwatched_set -= user_neg_ratings[user_index]
+        if user_index in users_negative_items:
+            unwatched_set -= users_negative_items[user_index]
 
         # Write negative sample (unwatched)
         for item in (np.random.choice(list(unwatched_set), size=len(pos_item_set), replace=False)):
             writer.write("{}\t{}\t0\n".format(user_index, item))
 
     writer.close()
-    print('converting rating file success !')
 
 
 def convert_kg():
-    print('converting kg file ...')
 
-    # Output file
-    writer = open('../data/' + DATASET + '/kg_final.txt', 'w', encoding='utf-8')
+    with open(OUTPUT_KG_FILENAME, 'w', encoding='utf-8') as writer:
 
-    if DATASET == 'movie':
-        raw_knowledge_graph = open('../data/' + DATASET + '/triples_idx2.txt', encoding='utf-8')
-    else:
-        raw_knowledge_graph = open('../data/' + DATASET + '/kg_rehashed.txt', encoding='utf-8')
+        raw_knowledge_graph = open(TRIPLES_FILENAME, encoding='utf-8')
+        for line in raw_knowledge_graph:
+            head, relation, tail = line.strip().split(' ')
+            writer.write("{}\t{}\t{}\n".format(head, relation, tail))
 
-    for line in raw_knowledge_graph:
-        head, relation, tail = line.strip().split(' ')
-        writer.write("{}\t{}\t{}\n".format(head, relation, tail))
-
-    writer.close()
     print('converting kg file success !')
 
 
-if __name__ == '__main__':
-    np.random.seed(555)
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--dataset', type=str, default='movie', help='which dataset to preprocess')
-    args = parser.parse_args()
-    DATASET = args.dataset
-
-    entity_id2index = dict()
-    relation_id2index = dict()
-    item_index_old2new = dict()
+if __name__ == "__main__":
 
     convert_rating()
     convert_kg()
-
-    print('done')
