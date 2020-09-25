@@ -1,5 +1,5 @@
 numpy==1.17.0
-tensorflow_gpu==1.14.0
+tensorflow_gpu==1.15.4
 tqdm==4.32.2
 scikit_learn==0.21.3
 tensorflow==1.14.0
